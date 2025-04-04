@@ -19,7 +19,7 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 ## 유튜브 스트리밍 방송을 키고 해당 url의 ID 참고
 ## 예시. url = https://youtube.com/live/examplecode1 일 경우 VIDED_ID = examplecode1
 
-YOUTUBE_VIDEO_ID = "YOUTUBE_VIDEO_ID"
+YOUTUBE_VIDEO_ID = os.getenv("YOUTUBE_VIDEO_ID")
 
 # 4. 응답을 저장할 파일
 TEXT_FILE = "gpt_response.txt"
