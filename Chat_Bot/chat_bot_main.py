@@ -17,7 +17,7 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 # 3. YouTube 라이브 채팅 비디오 ID 설정
 ## 유튜브 스트리밍 방송을 키고 해당 url의 ID 참고
-## 예시. url = https://youtube.com/live/examplecode1 일 경우 VIDED_ID = examplecode1
+## 예시. url = https://studio.youtube.com/video/examplevidoeid/livestreaming? = asdqwezxc 일 경우 VIDED_ID = examplevidoeid
 
 YOUTUBE_VIDEO_ID = os.getenv("YOUTUBE_VIDEO_ID")
 
@@ -27,7 +27,7 @@ TEXT_FILE = "gpt_response.txt"
 # 5. 로깅 설정
 logging.basicConfig(
     filename="chat_log.txt",
-    level=logging.INFO,
+    level=logging.WARNING,
     format="%(asctime)s - %(message)s",
     encoding="utf-8"
 )
@@ -36,7 +36,7 @@ logging.basicConfig(
 def generate_tts(text, mp3_file="output.mp3"):
     tts = gTTS(text=text, lang="ko")
     tts.save(mp3_file)
-    print(f"[INFO] TTS 음성 파일 생성 완료: {mp3_file}")
+    #print(f"[INFO] TTS 음성 파일 생성 완료: {mp3_file}")
 
 def play_audio(mp3_file="output.mp3"):
     pygame.mixer.init()  
@@ -66,22 +66,23 @@ def youtube_chat_bot():
             user_name = message.author.name
             user_message = message.message
             log_message = f"{user_name}: {user_message}"
-            print(f"{user_name}: {user_message}")
-
-            # 로그 파일에 저장
-            logging.info(log_message)
+            print(log_message)
 
             # GPT 응답 생성
             bot_response = get_gpt_response(user_message)
             print(f"Bot: {bot_response}")
 
-            # 응답을 파일에 저장하여 OBS에서 읽을 수 있도록 함
+            # 유저 메시지 + GPT 응답을 로그 파일에 저장
+            with open("chat_log.txt", "a", encoding="utf-8") as log_file:
+                log_file.write(f"{log_message}\n")  # 유저 메시지
+                log_file.write(f"Bot: {bot_response}\n\n")  # GPT 응답
+
             with open(TEXT_FILE, "w", encoding="utf-8") as f:
-                f.write(f"{bot_response}")
+                f.write(bot_response)
 
             # TTS 변환 및 출력
-            generate_tts(bot_response)          
-            play_audio()             
+            generate_tts(bot_response)
+            play_audio()
 
         sleep(1)
 
