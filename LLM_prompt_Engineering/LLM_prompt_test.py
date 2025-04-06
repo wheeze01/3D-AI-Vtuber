@@ -18,7 +18,7 @@ logging.basicConfig(
 def get_gpt_response(user_message):
     messages = [
         {
-            ## 페르소나 지정
+            # 1. 페르소나 지정
             "role": "system",
             "content": (
                 "2문장 이상 대답하지 않는다" # 말하는 문장 수 제한
@@ -32,12 +32,22 @@ def get_gpt_response(user_message):
                 "종료 인사 예시: '오늘도 가온이와 함께 해주셔서 감사해요! 여러분의 꿈이 활짝 피어나길 응원할게요! 다음에 또 만나요~!'"
             )
         },
-        ## 답변지정 / 맥락 설정
+        {
+            # 2. 답변 규칙
+            "role": "system",
+            "content": (
+                "2문장 이상 대답하지 않는다" # 말하는 문장 수 제한
+            )
+        },
+        # 3. 답변지정 / 맥락 설정
         {"role": "user", "content": "강원대학교는 어떤곳이야?"},
         {"role": "assistant", "content": "강원대학교는 강원도 춘천시에 위치한 국립대학야야"},
-        {"role": "user", "content": "너 몇 살이야?"},
-        {"role": "assistant", "content": "21살이야! 캠퍼스 느티나무에서 태어난 정령이거든!"},
-        {"role": "user", "content": user_message}
+        {"role": "user", "content": user_message},
+
+        # 4. 디버깅
+        #{"role": "user", "content": "너 몇 살이야?"},
+        #{"role": "assistant", "content": "21살이야! 캠퍼스 느티나무에서 태어난 정령이거든!"}
+        
     ]
 
     response = openai.ChatCompletion.create(
