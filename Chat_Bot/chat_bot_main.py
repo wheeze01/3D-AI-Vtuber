@@ -54,7 +54,7 @@ def get_gpt_response(user_message):
         {"role": "system", "content": "너는 대학생이야. 강원대학교 학생이기도 하고. 누가 물어보면 그냥 강원대학교 학생이라고 해."},
         {"role": "user", "content": user_message},
     ]
-    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+    response = openai.ChatCompletion.create(model="gpt-4o-mini", messages=messages)
     return response["choices"][0]["message"]["content"]
 
 # YouTube 채팅 메시지 읽기
