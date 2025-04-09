@@ -2,9 +2,9 @@ import openai
 import os
 import logging
 from dotenv import load_dotenv
-import pygame
 import uuid
 import os
+import json
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -20,7 +20,7 @@ logging.basicConfig(
 # GPT 응답 생성 함수 (LLM_Prompt)
 def get_gpt_response(user_message):
     response = openai.chat.completions.create(
-    model = "gpt-3.5-turbo",
+    model = "gpt-4o-mini",
     messages = [
                 {
             "role": "system",
@@ -69,6 +69,16 @@ def get_gpt_response(user_message):
 8. 시그니처 인사:
 - 시작: “안녕하세요! 강원의 푸른 심장을 닮은 여러분의 친구, 강가온입니다! 오늘 저와 함께 어떤 즐거운 씨앗을 심어볼까요?”
 - 종료: “오늘도 가온이와 함께 해주셔서 감사해요! 여러분의 꿈이 활짝 피어나길 응원할게요! 다음에 또 만나요~!”
+
+9. 모든 응답은 JSON 형식으로 출력해야 하며, 다음 세 가지 항목을 포함해야 해:
+   - "content": 강가온의 대답 (2문장 이내, 친근한 말투, 정확한 정보 기반)
+   - "expression": 강가온의 표정 (다음 중 하나 사용: Basic facial, Close eye, Confused, Joy, Kirakira, Niyari, Pero, Zako, Angry, Boo, Cat, Cry, Despair, Dog, Guruguru, Hau, Jito, Joy 2, Mesugaki, Nagomi 2, Nagomi, O_O, Onemu, Sad, Shy, Tang, Tehe, Wink)
+
+예시:
+{
+  "content": "강원대학교는 자연과 조화로운 캠퍼스가 자랑이에요! 꼭 한 번 놀러오세요~",
+  "expression": "Kirakira",
+}
 """
         },
         {
@@ -127,27 +137,59 @@ def save_and_play_audio(audio_data):
 def main():
     print("GPT 채팅 시작! '종료' 입력 시 종료\n")
 
+    json_log_path = "chat_log.json"
+
+    # 기존 JSON 로그 파일이 없다면 빈 리스트로 시작
+    if os.path.exists(json_log_path):
+        with open(json_log_path, "r", encoding="utf-8") as f:
+            try:
+                json_chat_log = json.load(f)
+            except json.JSONDecodeError:
+                json_chat_log = []
+    else:
+        json_chat_log = []
+
     while True:
         user_input = input("질문자: ")
         if user_input.lower() in ["종료"]:
             print("👋 대화를 종료합니다.")
             break
 
-        # GPT 응답 생성
+        # GPT 응답 생성 (JSON 형식 문자열)
         bot_response = get_gpt_response(user_input)
-        print(f"🤖 강가온: {bot_response}\n")
+        
+        try:
+            response_json = json.loads(bot_response)
+            content = response_json.get("content", "")
+            expression = response_json.get("expression", "")
+        
+        except json.JSONDecodeError:
+            print("⚠️ JSON 형식 오류.")
+            print(f"🤖 강가온: {bot_response}\n")
+            continue
 
-        # 행동 별도 저장
-        
+        # 강가온의 답변 출력
+        print(f"🤖 강가온: {content}\n")
 
-        #audio_data = text_to_speech(bot_response)
-        #save_and_play_audio(audio_data)
-        
-        
-        # 로그 파일 저장 (유저 + GPT)
+        # 음성으로 변환
+        # audio_data = text_to_speech(content)
+        # save_and_play_audio(audio_data)
+
+        # 로그 파일 저장 (텍스트)
         with open("chat_log.txt", "a", encoding="utf-8") as log_file:
             log_file.write(f"질문자: {user_input}\n")
-            log_file.write(f"강가온: {bot_response}\n\n")
+            log_file.write(f"강가온: {content}\n")
+            log_file.write(f"[표정: {expression}]\n\n")
+
+        # JSON 로그 저장
+        json_chat_log.append({
+            "user": user_input,
+            "response": content,
+            "expression": expression
+        })
+
+        with open(json_log_path, "w", encoding="utf-8") as json_file:
+            json.dump(json_chat_log, json_file, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     main()
