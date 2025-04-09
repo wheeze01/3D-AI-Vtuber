@@ -2,8 +2,9 @@ import openai
 import os
 import logging
 from dotenv import load_dotenv
-import tempfile
-import playsound
+import pygame
+import uuid
+import os
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -11,7 +12,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # 로그 설정
 logging.basicConfig(
     filename="chat_log.txt",
-    level=logging.INFO,
+    level=logging.WARNING,
     format="%(asctime)s - %(message)s",
     encoding="utf-8"
 )
@@ -114,13 +115,14 @@ def text_to_speech(text):  # 선택: 'nova', 'shimmer', 'fable' 등
     return response.content  # 🔥 bytes 형태로 반환됨
 
 def save_and_play_audio(audio_data):
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio:
-        temp_audio.write(audio_data)  # 🔥 여기에 bytes만 들어가야 함
-        temp_audio_path = temp_audio.name
+    # 고유한 파일 이름 생성
+    temp_audio_path = f"temp_{uuid.uuid4().hex}.mp3"
 
-    playsound.playsound(temp_audio_path)
-    os.remove(temp_audio_path)  # 재생 후 파일 삭제
+    with open(temp_audio_path, "wb") as f:
+        f.write(audio_data)
 
+    # 파일 재생
+    os.system(f'start {temp_audio_path}')
 
 def main():
     print("GPT 채팅 시작! '종료' 입력 시 종료\n")
@@ -134,6 +136,9 @@ def main():
         # GPT 응답 생성
         bot_response = get_gpt_response(user_input)
         print(f"🤖 강가온: {bot_response}\n")
+
+        # 행동 별도 저장
+        
 
         #audio_data = text_to_speech(bot_response)
         #save_and_play_audio(audio_data)
