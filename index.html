@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <script>
+        // WebSocket 서버 연결 (포트 8081)
+        const socket = new WebSocket('ws://localhost:8081');  
+
+        socket.onopen = () => {
+            console.log('WebSocket connected!');
+            socket.send('Hello from client!');
+        };
+
+        socket.onmessage = (event) => {
+            console.log('Received from server: ' + event.data);
+        };
+
+        socket.onerror = (error) => {
+            console.log('WebSocket error: ' + error);
+        };
+
+        socket.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+    </script>
+</body>
+</html>
