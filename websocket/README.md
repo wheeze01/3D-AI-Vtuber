@@ -1,4 +1,4 @@
-vscode에서 server.js를 실행하기 위해 node server.js를 수행\n
+vscode에서 server.js를 실행하기 위해 node server.js를 수행
 -> node 명령어가 수행하지 않을시 브라우저에서 node 다운로드 필요
 vscode에서 LLM_prompt_test_TTS.py는 python LLM_prompt_test_TTS.py를 수행
 -> 위의 두 과정이 완료되었다면 openai와 websocket사이의 통신 성공
