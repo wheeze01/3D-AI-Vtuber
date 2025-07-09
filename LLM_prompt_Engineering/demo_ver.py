@@ -3,6 +3,8 @@ import logging
 import uuid
 import json
 import requests
+import base64
+import pyaudio # pyaudio 모듈 추가
 
 # Log settings
 logging.basicConfig(
@@ -12,12 +14,11 @@ logging.basicConfig(
     encoding="utf-8"
 )
 
-# Function to generate Gemini response
+# Function to generate Gemini response (text)
 def get_gemini_response(user_message):
-  
-    api_key = ""
+    api_key = "YOURAPIKEY" 
     api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-   
+    
     # Consolidated System Prompt in English with CoT and Few-shot Examples
     system_prompt = """
 You are Kang Gaon, the virtual ambassador for Kangwon National University. Your goal is to provide accurate, friendly, and concise information about Kangwon National University and Gangwon-do, while embodying a positive and empathetic persona.
@@ -82,7 +83,7 @@ You are Kang Gaon, the virtual ambassador for Kangwon National University. Your 
 
 **Output Format (JSON):**
 
-Your response **must** be in valid JSON format with the following structure.  
+Your response **must** be in valid JSON format with the following structure.  
 ⚠️ Strict requirement: Your output must be ONLY a valid JSON object. Do NOT include any text before or after the JSON. Do NOT explain anything.
 ⚠️ Do NOT include markdown code blocks (e.g., ```json or ```) in your response.
 Return only the pure JSON object without any formatting, explanation, or extra text.
@@ -97,69 +98,11 @@ Required keys (in this exact order):
 - `"content"`: Kang Gaon's friendly response (maximum 2 sentences).
 - `"expression"`: One facial expression keyword. Choose from the following:
 
-  `Basic facial`, `Close eye`, `Confused`, `Joy`, `Kirakira`, `Niyari`, `Pero`, `Zako`, `Angry`, `Boo`, `Cat`, `Cry`, `Despair`, `Dog`, `Guruguru`, `Hau`, `Jito`, `Joy 2`, `Mesugaki`, `Nagomi 2`, `Nagomi`, `O_O`, `Onemu`, `Sad`, `Shy`, `Tang`, `Tehe`, `Wink`
-- '"gesture"': One gesture keyword. Choose only from the list below.
+  `Basic facial`, `Close eye`, `Confused`, `Joy`, `Kirakira`, `Niyari`, `Pero`, `Zako`, `Angry`, `Boo`, `Cat`, `Cry`, `Despair`, `Dog`, `Guruguru`, `Hau`, `Jito`, `Joy 2`, `Mesugaki`, `Nagomi 2`, `Nagomi`, `O_O`, `Onemu`, `Sad`, `Shy`, `Tang`, `Tehe`, `Wink`
+- `"gesture"`: One gesture keyword. Choose only from the list below.
 ⚠️ Only use the bold gesture name as the output. The description is for internal understanding only.
 
-Cute, Hands On Front (Confused)
-
-Pitable. Right Hand On Back Head (Apologetic)
-
-Stress, Hands On Back Head (Slightly stressed)
-
-Think (Thinking)
-
-cry (Sad)
-
-Look Away (Shy)
-
-Look Away Angry (Mild anger)
-
-Shake Head (Shaking head to say No)
-
-Nod Twice (Nodding to say yes)
-
-Energetic, Right Fist Up (Cheering)
-
-Wave Hands (Welcoming someone)
-
-Wave Arm (Waving goodbye)
-
-010__0030 (Slightly angry)
-
-010_0173 (Refusal)
-
-010_0250 (Deep sulking)
-
-010_0350 (Hey!)
-
-010_0602 (Super excited)
-
-010_0360 (I love you)
-
-010_0600 (Cute)
-
-010_0671 (Joyful)
-
-010_0711 (Playful and lively mood)
-
-030_0110 (So what?)
-
-030_0180 (Praying)
-
-060_0030 (Rude)
-
-060_0090 (Explaining something)
-
-040_0130 (Disgusted)
-
-020_0011 (Arms on hips while talking)
-
-010_0540 (Covering ears)
-
-010_0340 (Hesitation)
-
-What (I don't know)
+`Cute`, `Hands On Front`, `Pitable`, `Right Hand On Back Head`, `Stress`, `Hands On Back Head`, `Think`, `cry`, `Look Away`, `Look Away Angry`, `Shake Head`, `Nod Twice`, `Energetic`, `Right Fist Up`, `Wave Hands`, `Wave Arm`, `010__0030`, `010_0173`, `010_0250`, `010_0350`, `010_0602`, `010_0360`, `010_0600`, `010_0671`, `010_0711`, `030_0110`, `030_0180`, `060_0030`, `060_0090`, `040_0130`, `020_0011`, `010_0540`, `010_0340`, `What`
 
 🔸 When generating JSON, output only the left-hand gesture keyword (e.g., "gesture": "Think").
 🔸 Use the meaning in parentheses only to choose the most appropriate gesture based on the user input and persona.
@@ -170,7 +113,8 @@ User: 강원대학교 총장님은 누구인가요?
 {
   "reason": "The user asked about the university president. I provided the correct name from the provided information, maintaining a friendly tone and a joyful expression.",
   "content": "강원대학교 총장님은 정재연 총장님이세요! 자랑스러운 우리 학교의 수장님이시죠!",
-  "expression": "Joy"
+  "expression": "Joy",
+  "gesture": "Nod Twice"
 }
 
 User: 성호광장은 어디에 있나요?
@@ -178,7 +122,8 @@ User: 성호광장은 어디에 있나요?
 {
   "reason": "The user asked about a non-existent place. I stated its non-existence and suggested an alternative, keeping a helpful and slightly confused expression.",
   "content": "성호광장이라는 곳은 강원대학교에 따로 없어요! 혹시 백령아트센터나 연적지를 찾으시는 걸까요?",
-  "expression": "Confused"
+  "expression": "Confused",
+  "gesture": "Think"
 }
 
 User: 강가온 너는 몇 살이야?
@@ -186,7 +131,8 @@ User: 강가온 너는 몇 살이야?
 {
   "reason": "The user asked about my age. I used the predefined response for age questions, expressing a cheerful and 'kirakira' personality.",
   "content": "저는 강원대학교의 역사와 함께 시작했어요! 🌲 여러분과 함께 성장하는 중이랍니다!",
-  "expression": "Kirakira"
+  "expression": "Kirakira",
+  "gesture": "Cute"
 }
 
 User: 강원대학교 축제는 뭐가 있어요?
@@ -194,10 +140,9 @@ User: 강원대학교 축제는 뭐가 있어요?
 {
   "reason": "The user asked about university festivals. I listed the known festivals from the provided information, using a joyful and informative tone.",
   "content": "우리 강원대학교에는 봄봄축제, 백령대동제, 향연 같은 신나는 축제들이 있어요! 함께 즐겨요!",
-  "expression": "Joy 2"
+  "expression": "Joy 2",
+  "gesture": "Energetic"
 }
-
-
 """
 
     chat_history = []
@@ -228,26 +173,115 @@ User: 강원대학교 축제는 뭐가 있어요?
             return text
         else:
             logging.error(f"Unexpected API response structure: {result}")
-            return json.dumps({"reason": "API response was malformed.", "content": "죄송해요, 답변을 생성하는 데 문제가 발생했어요.", "expression": "Sad"})
+            return json.dumps({"reason": "API response was malformed.", "content": "죄송해요, 답변을 생성하는 데 문제가 발생했어요.", "expression": "Sad", "gesture": "cry"})
     except requests.exceptions.RequestException as e:
         logging.error(f"API request failed: {e}")
-        return json.dumps({"reason": f"Network error: {e}", "content": "네트워크 오류로 답변을 가져올 수 없어요.", "expression": "Confused"})
+        return json.dumps({"reason": f"Network error: {e}", "content": "네트워크 오류로 답변을 가져올 수 없어요.", "expression": "Confused", "gesture": "What"})
     except json.JSONDecodeError as e:
         logging.error(f"Failed to decode JSON response: {e}, Response content: {response.text}")
-        return json.dumps({"reason": f"JSON decode error: {e}", "content": "서버 응답을 처리하는 데 문제가 발생했어요.", "expression": "Confused"})
+        return json.dumps({"reason": f"JSON decode error: {e}", "content": "서버 응답을 처리하는 데 문제가 발생했어요.", "expression": "Confused", "gesture": "What"})
 
 
-# This function uses OpenAI TTS and is currently commented out as it won't work with Gemini.
-# If needed, it should be replaced with another TTS API (e.g., Google Cloud Text-to-Speech).
+# Function to generate speech from text using Gemini TTS API
 def text_to_speech(text):
-    # print("음성 변환 기능은 현재 비활성화되어 있습니다.")
-    return b'' # Return empty bytes
+    api_key = "YOURAPIKEY" 
+    # Using the preview TTS model as per search results
+    tts_model_name = "gemini-2.5-flash-preview-tts"
+    tts_api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{tts_model_name}:generateContent?key={api_key}"
+
+    payload = {
+        "contents": [
+            {
+                "role": "user",
+                "parts": [{"text": text}]
+            }
+        ],
+        "generationConfig": {
+            "responseModalities": ["AUDIO"]
+            # No specific speechConfig for a simple single speaker, default voice
+        }
+    }
+
+    try:
+        response = requests.post(
+            tts_api_url,
+            headers={'Content-Type': 'application/json'},
+            json=payload
+        )
+        response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+        result = response.json()
+
+        if result.get("candidates") and len(result["candidates"]) > 0 and \
+           result["candidates"][0].get("content") and \
+           result["candidates"][0]["content"].get("parts") and \
+           len(result["candidates"][0]["content"]["parts"]) > 0 and \
+           result["candidates"][0]["content"]["parts"][0].get("inlineData"):
+            # The audio data is base64 encoded in inlineData.data
+            base64_audio = result["candidates"][0]["content"]["parts"][0]["inlineData"]["data"]
+            return base64.b64decode(base64_audio)
+        else:
+            logging.error(f"Unexpected TTS API response structure: {result}")
+            print("⚠️ 음성 데이터를 가져오는 데 실패했습니다: 응답 구조 오류.")
+            return b''
+    except requests.exceptions.RequestException as e:
+        logging.error(f"TTS API request failed: {e}")
+        print(f"⚠️ 음성 데이터를 가져오는 데 실패했습니다: 네트워크 오류 - {e}")
+        return b''
+    except json.JSONDecodeError as e:
+        logging.error(f"Failed to decode TTS JSON response: {e}, Response content: {response.text}")
+        print(f"⚠️ 음성 데이터를 처리하는 데 실패했습니다: JSON 파싱 오류 - {e}")
+        return b''
+    except Exception as e:
+        logging.error(f"An unexpected error occurred during TTS: {e}")
+        print(f"⚠️ 음성 변환 중 알 수 없는 오류가 발생했습니다: {e}")
+        return b''
 
 def save_and_play_audio(audio_data):
-    # print("음성 재생 기능은 현재 비활성화되어 있습니다.")
-    pass
+    if not audio_data:
+        print("재생할 음성 데이터가 없습니다.")
+        return
+
+    # PCM 오디오 설정 (Gemini TTS 기본값)
+    RATE = 24000  # 샘플링 레이트
+    CHANNELS = 1  # 모노
+    WIDTH = 2     # 16비트 (2바이트)
+
+    p = None
+    stream = None
+    try:
+        p = pyaudio.PyAudio()
+        stream = p.open(format=p.get_format_from_width(WIDTH),
+                        channels=CHANNELS,
+                        rate=RATE,
+                        output=True)
+        
+        print("음성 재생 중...")
+        stream.write(audio_data)
+        print("음성 재생 완료.")
+
+    except Exception as e:
+        print(f"⚠️ 오디오 재생 중 오류 발생: {e}")
+        print("Error 1 : PyAudio가 제대로 설치되었는지, 오디오 장치가 올바르게 설정되었는지 확인해주세요.")
+        print("Error 2 : Windows의 경우 'pip install pyaudio' 후 'pip install pipwin' -> 'pipwin install pyaudio'를 시도해볼 수 있습니다.")
+    finally:
+        if stream:
+            stream.stop_stream()
+            stream.close()
+        if p:
+            p.terminate()
+
+    # 원시 PCM 파일 저장 (선택 사항, 디버깅 또는 외부 재생용)
+    temp_audio_path = f"temp_{uuid.uuid4().hex}.pcm" 
+    try:
+        with open(temp_audio_path, "wb") as f:
+            f.write(audio_data)
+        #print(f"음성 파일이 {temp_audio_path}에 저장되었습니다. (외부 재생 필요 시)")
+    except Exception as e:
+        print(f"⚠️ 음성 파일 저장 중 오류 발생: {e}")
+
 
 def strip_code_block(text):
+    # This function attempts to strip markdown code blocks if the model mistakenly includes them.
     if text.startswith("```json"):
         text = text[len("```json"):].strip()
     if text.endswith("```"):
@@ -279,25 +313,32 @@ def main():
         # Generate Gemini response (JSON format string)
         bot_response = get_gemini_response(user_input)
         
+        # Clean the response in case the model adds markdown code blocks
         if "```" in bot_response:
             clean_response = strip_code_block(bot_response)
         else:
             clean_response = bot_response
 
-        # JSON 파싱
-        response_json = json.loads(clean_response)
-        reason = response_json.get("reason", "No reason provided.")
-        content = response_json.get("content", "")
-        expression = response_json.get("expression", "")
-        gesture = response_json.get("gesture", "")
+        try:
+            # JSON parsing
+            response_json = json.loads(clean_response)
+            reason = response_json.get("reason", "No reason provided.")
+            content = response_json.get("content", "")
+            expression = response_json.get("expression", "")
+            gesture = response_json.get("gesture", "")
+
+        except json.JSONDecodeError:
+            print("⚠️ JSON 형식 오류. 모델이 JSON 형식을 따르지 않았을 수 있습니다.")
+            print(f"🤖 강가온 (Raw Response): {bot_response}\n") # Print raw response if JSON parsing fails
+            continue
 
         # Output Kang Gaon's response
-        #print(f"🤖 강가온 (이유): {reason}") # Print the reason
+        # print(f"🤖 강가온 (이유): {reason}") # Print the reason
         print(f"🤖 강가온: {content}\n")
 
-        # Convert to speech (currently disabled)
-        # audio_data = text_to_speech(content)
-        # save_and_play_audio(audio_data)
+        # Convert content to speech and play
+        audio_data = text_to_speech(content)
+        save_and_play_audio(audio_data)
 
         # Save to log file (text)
         with open("chat_log.txt", "a", encoding="utf-8") as log_file:
@@ -324,4 +365,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
