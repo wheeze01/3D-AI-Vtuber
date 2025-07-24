@@ -5,7 +5,31 @@ import json
 import requests
 import base64
 import pyaudio # pyaudio 모듈 추가
+import time
+from Chat_filter import (
+    collect_recent_messages,
+    select_final_messages,
+    clean_text,
+    is_valid_message,
+    gemini_response_filter
+)
+import queue
+import threading
+import random
 
+dummy_messages = [
+    "이재명이 누구야",
+    "축구 선수 누구 좋아해?",
+    "점심 추천해줘",
+    "취미놀이 추천해줘",
+]
+
+def simulate_chat_input():
+    selected_msg = random.choice(dummy_messages)
+    user_id = "dummy_user"  # 임시 사용자 아이디, 실제 환경에 맞게 바꾸세요.
+    chat_stream.put((user_id, selected_msg))
+    time.sleep(2)
+                        
 # Log settings
 logging.basicConfig(
     filename="chat_log.txt",
@@ -16,7 +40,7 @@ logging.basicConfig(
 
 # Function to generate Gemini response (text)
 def get_gemini_response(user_message):
-    api_key = "YOURAPIKEY" 
+    api_key = "AIzaSyC_DNkOPFwYAeyDZOpzWla1qOPZOlBYsMc" 
     api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
     
     # Consolidated System Prompt in English with CoT and Few-shot Examples
@@ -182,6 +206,8 @@ User: 강원대학교 축제는 뭐가 있어요?
         return json.dumps({"reason": f"JSON decode error: {e}", "content": "서버 응답을 처리하는 데 문제가 발생했어요.", "expression": "Confused", "gesture": "What"})
 
 
+
+
 # Function to generate speech from text using Gemini TTS API
 def text_to_speech(text):
     api_key = "YOURAPIKEY" 
@@ -288,57 +314,89 @@ def strip_code_block(text):
         text = text[:-3].strip()
     return text
 
+chat_stream = queue.Queue()
 
 def main():
     print("강가온 챗봇 시작! '종료' 입력 시 종료\n")
 
     json_log_path = "chat_log.json"
-
-    # Start with an empty list if the JSON log file doesn't exist
-    if os.path.exists(json_log_path):
+    try:
         with open(json_log_path, "r", encoding="utf-8") as f:
-            try:
-                json_chat_log = json.load(f)
-            except json.JSONDecodeError:
-                json_chat_log = []
-    else:
+            json_chat_log = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
         json_chat_log = []
+    # 1) 시뮬레이션용 메시지 입력 스레드 시작
+    threading.Thread(target=simulate_chat_input, daemon=True).start()
 
     while True:
-        user_input = input("질문자: ")
-        if user_input.lower() in ["종료"]:
-            print("👋 대화를 종료합니다.")
-            break
+        print("📥 10초 동안 사용자 메시지 수집 중...")
+        collected = collect_recent_messages(chat_stream, duration=10)  # 10초간 큐에서 모음
 
-        # Generate Gemini response (JSON format string)
-        bot_response = get_gemini_response(user_input)
-        
-        # Clean the response in case the model adds markdown code blocks
-        if "```" in bot_response:
-            clean_response = strip_code_block(bot_response)
-        else:
-            clean_response = bot_response
-
-        try:
-            # JSON parsing
-            response_json = json.loads(clean_response)
-            reason = response_json.get("reason", "No reason provided.")
-            content = response_json.get("content", "")
-            expression = response_json.get("expression", "")
-            gesture = response_json.get("gesture", "")
-
-        except json.JSONDecodeError:
-            print("⚠️ JSON 형식 오류. 모델이 JSON 형식을 따르지 않았을 수 있습니다.")
-            print(f"🤖 강가온 (Raw Response): {bot_response}\n") # Print raw response if JSON parsing fails
+        if not collected:
+            print("⏳ 메시지가 없습니다. 다시 수집합니다.\n")
             continue
 
-        # Output Kang Gaon's response
-        # print(f"🤖 강가온 (이유): {reason}") # Print the reason
-        print(f"🤖 강가온: {content}\n")
+        #전처리: 유저별 중복 제거, 정제, 유효성 필터링
+        cleaned_messages = []
+        seen_users = set()
+        for user, msg in collected:
+            if user not in seen_users:
+                cleaned = clean_text(msg)
+                if is_valid_message(cleaned) :
+                    seen_users.add(user)
+                    cleaned_messages.append(cleaned)
 
-        # Convert content to speech and play
-        audio_data = text_to_speech(content)
-        save_and_play_audio(audio_data)
+        print(f"✅ 필터링된 채팅: {len(cleaned_messages)}개")
+
+
+        # 직전 응답 가져오기 (빈 문자열이면 첫 회차)
+        last_response = json_chat_log[-1]["response"] if json_chat_log else ""
+
+        # 핵심 질문 선택
+        final_messages = select_final_messages(cleaned_messages, last_response)
+
+        if not final_messages:
+            print("⛔ 유효한 질문이 없어 응답을 건너뜁니다.\n")
+            continue
+
+        # Gemini 응답 생성
+        gemini_response_filter_var = gemini_response_filter(final_messages)
+
+        # 응답 출력
+        print("\n🧠 Gemini 필터링 응답 ↓↓↓")
+        print(json.dumps(gemini_response_filter_var, ensure_ascii=False, indent=2))
+
+        if not final_messages:
+            print("✅ 필터링 후 남은 메시지가 없습니다. 다시 수집합니다.\n")
+            continue
+
+        for user_input in final_messages:
+            if user_input.lower() == "종료":
+                print("👋 대화를 종료합니다.")
+                return
+
+            print(f"질문자: {user_input}")
+
+            bot_response = get_gemini_response(user_input)
+            if "```" in bot_response:
+                clean_response = strip_code_block(bot_response)
+            else:
+                clean_response = bot_response
+
+            try:
+                response_json = json.loads(clean_response)
+                reason = response_json.get("reason", "No reason provided.")
+                content = response_json.get("content", "")
+                expression = response_json.get("expression", "")
+                gesture = response_json.get("gesture", "")
+            except json.JSONDecodeError:
+                print("⚠️ JSON 형식 오류. 모델이 JSON 형식을 따르지 않았을 수 있습니다.")
+                print(f"🤖 강가온 (Raw Response): {bot_response}\n")
+                continue
+
+            print(f"🤖 강가온: {content}\n")
+            audio_data = text_to_speech(content)
+            save_and_play_audio(audio_data)
 
         # Save to log file (text)
         with open("chat_log.txt", "a", encoding="utf-8") as log_file:
@@ -348,20 +406,22 @@ def main():
             log_file.write(f"[표정: {expression}]\n")
             log_file.write(f"[행동: {gesture}]\n\n")
 
-        # Save to JSON log
-        json_chat_log.append({
-            "user": user_input,
-            "reason": reason, # Include reason in JSON log
-            "response": content,
-            "expression": expression,
-            "gesture": gesture
-        })
+        # JSON 로그에 추가 및 저장
+            json_chat_log.append({
+                "user": user_input,
+                "reason": reason,
+                "response": content,
+                "expression": expression,
+                "gesture": gesture
+            })
 
-        try:
-            with open(json_log_path, "w", encoding="utf-8") as json_file:
-                json.dump(json_chat_log, json_file, ensure_ascii=False, indent=4)
-        except Exception as e:
-            print("⚠️ JSON 저장 중 오류 발생:", e)
+            try:
+                with open(json_log_path, "w", encoding="utf-8") as f:
+                    json.dump(json_chat_log, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                print(f"⚠️ JSON 저장 중 오류 발생: {e}")
+            
+
 
 if __name__ == "__main__":
     main()
