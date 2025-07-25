@@ -8,7 +8,6 @@ import pyaudio # pyaudio 모듈 추가
 import time
 from Chat_filter import (
     collect_recent_messages,
-    select_final_messages,
     clean_text,
     is_valid_message,
     gemini_response_filter
@@ -18,10 +17,10 @@ import threading
 import random
 
 dummy_messages = [
-    "이재명이 누구야",
-    "축구 선수 누구 좋아해?",
-    "점심 추천해줘",
-    "취미놀이 추천해줘",
+    "헐 ㅋㅋ 와 오 시발 이재명이 누구야",
+    "헐 ㅋㅋ 와 오 시발축구 선수 누구 좋아해?",
+    "헐 ㅋㅋ 와 오 시발점심 추천해줘",
+    "헐 ㅋㅋ 와 오 시발 취미놀이 추천해줘",
 ]
 
 def simulate_chat_input():
@@ -350,34 +349,35 @@ def main():
 
 
         # 직전 응답 가져오기 (빈 문자열이면 첫 회차)
-        last_response = json_chat_log[-1]["response"] if json_chat_log else ""
-
-        # 핵심 질문 선택
-        final_messages = select_final_messages(cleaned_messages, last_response)
-
-        if not final_messages:
-            print("⛔ 유효한 질문이 없어 응답을 건너뜁니다.\n")
-            continue
+        #last_response = json_chat_log[-1]["response"] if json_chat_log else ""
 
         # Gemini 응답 생성
-        gemini_response_filter_var = gemini_response_filter(final_messages)
+        gemini_response_filter_var = gemini_response_filter(cleaned_messages)
 
         # 응답 출력
         print("\n🧠 Gemini 필터링 응답 ↓↓↓")
-        print(json.dumps(gemini_response_filter_var, ensure_ascii=False, indent=2))
+        print(f"📡 Gemini API 원본 응답: {gemini_response_filter_var}")
 
-        if not final_messages:
+        if not gemini_response_filter_var:
             print("✅ 필터링 후 남은 메시지가 없습니다. 다시 수집합니다.\n")
             continue
 
-        for user_input in final_messages:
-            if user_input.lower() == "종료":
+
+        if isinstance(gemini_response_filter_var, dict):
+            response_entry = gemini_response_filter_var.get("response", {})
+            if isinstance(response_entry, dict):
+                representative_question = response_entry.get("question", "")
+            else:
+                representative_question = response_entry  # str인 경우
+        elif isinstance(gemini_response_filter_var, str):
+            representative_question = gemini_response_filter_var
+
+            if representative_question.lower() == "종료":
                 print("👋 대화를 종료합니다.")
                 return
 
-            print(f"질문자: {user_input}")
+            bot_response = get_gemini_response(representative_question)
 
-            bot_response = get_gemini_response(user_input)
             if "```" in bot_response:
                 clean_response = strip_code_block(bot_response)
             else:
@@ -398,17 +398,15 @@ def main():
             audio_data = text_to_speech(content)
             save_and_play_audio(audio_data)
 
-        # Save to log file (text)
-        with open("chat_log.txt", "a", encoding="utf-8") as log_file:
-            log_file.write(f"질문자: {user_input}\n")
-            log_file.write(f"강가온 (이유): {reason}\n")
-            log_file.write(f"강가온: {content}\n")
-            log_file.write(f"[표정: {expression}]\n")
-            log_file.write(f"[행동: {gesture}]\n\n")
+            with open("chat_log.txt", "a", encoding="utf-8") as log_file:
+                log_file.write(f"질문자: {gemini_response_filter_var}\n")
+                log_file.write(f"강가온 (이유): {reason}\n")
+                log_file.write(f"강가온: {content}\n")
+                log_file.write(f"[표정: {expression}]\n")
+                log_file.write(f"[행동: {gesture}]\n\n")
 
-        # JSON 로그에 추가 및 저장
             json_chat_log.append({
-                "user": user_input,
+                "user": gemini_response_filter_var,
                 "reason": reason,
                 "response": content,
                 "expression": expression,
@@ -420,8 +418,6 @@ def main():
                     json.dump(json_chat_log, f, ensure_ascii=False, indent=2)
             except Exception as e:
                 print(f"⚠️ JSON 저장 중 오류 발생: {e}")
-            
-
 
 if __name__ == "__main__":
     main()

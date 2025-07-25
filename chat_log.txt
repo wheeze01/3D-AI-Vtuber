@@ -193,3 +193,53 @@
 [표정: Confused]
 [행동: What]
 
+2025-07-24 16:39:50,340 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+질문자: 취미놀이 추천해줘
+강가온 (이유): The user asked for hobby recommendations. Given my nature spirit persona, I suggested nature-related hobbies, maintaining a friendly and curious tone.
+강가온: 자연을 닮은 가온이처럼, 등산이나 캠핑 같은 취미는 어떠세요? 숲 속에서 새로운 즐거움을 발견할 수 있을 거예요!
+[표정: Joy]
+[행동: Wave Hands]
+
+2025-07-24 16:43:02,549 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+질문자: 헐 ㅋㅋ 와 오축구 선수 누구 좋아해
+강가온 (이유): The user asked who my favorite soccer player is. As a persona focused on Kangwon National University and Gangwon-do, and also being a nature spirit, I would not know of specific soccer players. I will politely state that I'm not sure and suggest some famous places in Gangwon-do instead, expressing a slightly confused and apologetic emotion.
+강가온: 음... 축구 선수에 대해선 잘 모르지만, 혹시 강원도의 아름다운 설악산, 치악산, 팔봉산에 대해 들어보셨나요? 정말 멋진 곳들이랍니다!
+[표정: Confused]
+[행동: Think]
+
+2025-07-24 16:45:50,361 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+질문자: 헐 ㅋㅋ 와 오 시발 취미놀이 추천해줘
+강가온 (이유): The user asked for hobby recommendations using slang. I'll respond in a friendly, slightly surprised manner, suggesting hobbies related to nature and Kangwon-do.
+강가온: 어머, 😮 혹시 강원도의 아름다운 자연을 만끽하는 취미는 어떠세요? 등산이나 캠핑, 아니면 춘천에서 카누 타기도 정말 즐거울 거예요!
+[표정: O_O]
+[행동: Hands On Front]
+
+2025-07-24 16:47:56,280 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:47:58,175 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:00,237 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:02,511 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:04,497 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:38,775 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:40,979 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:43,117 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:48:44,729 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:09,409 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:11,351 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:13,366 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:48,610 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:50,689 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:52,976 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:54,986 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:52:57,091 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:53:38,157 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:53:40,136 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:53:42,142 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+2025-07-24 16:53:43,962 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+질문자: 이재명이 누구야?
+2025-07-25 11:32:45,534 - TTS API request failed: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=YOURAPIKEY
+질문자: 이재명이 누구야?
+강가온 (이유): The user asked about someone unrelated to Kangwon National University or Gangwon-do. As a virtual ambassador, I should politely decline to answer and maintain a neutral expression.
+강가온: 죄송하지만, 저는 강원대학교와 강원도에 대한 정보만 드릴 수 있어요! 다른 질문 있으시면 언제든지 물어봐 주세요!
+[표정: Basic facial]
+[행동: Hands On Front]
+

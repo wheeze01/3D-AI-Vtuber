@@ -22,6 +22,20 @@ def collect_recent_messages(chat_stream: Queue, duration: int = 10) -> List[tupl
     return collected
 
 
+#다국어 입력 대응
+# def translate_to_korean(text: str) -> str:
+#     url = f"https://translation.googleapis.com/language/translate/v2"
+#     params = {
+#         "q": text,
+#         "target": "ko",
+#         "format": "text",
+#         "key": "YOUR_GOOGLE_TRANSLATE_API_KEY"
+#     }
+#     resp = requests.post(url, data=params)
+#     return resp.json()['data']['translations'][0]['translatedText']
+
+
+#길이 제한 감탄사도 짜름
 def is_valid_message(message: str) -> bool:
     message = message.strip()
     if not message:
@@ -37,7 +51,7 @@ def clean_text(message: str) -> str:
     message = re.sub(r'[^\w\s가-힣]', '', message)  # 이모티콘/특수문자 제거
     return message.strip()
 
-#동일 질문자 중복 제거
+#동일 질문자 중복 제거 (현재 안쓰고있음)
 def filter_by_unique_users(messages: List[tuple]) -> List[str]:
     seen_users = set()
     results = []
@@ -48,7 +62,7 @@ def filter_by_unique_users(messages: List[tuple]) -> List[str]:
     return results
 
 
-#이전 응답과 관련성 높은 질문 우선
+#이전 응답과 관련성 높은 질문 우선 (현재 안쓰고있음)
 def relevance_score(message: str, last_bot_response: str) -> float:
     msg_words = set(message.lower().split())
     bot_words = set(last_bot_response.lower().split())
@@ -56,14 +70,13 @@ def relevance_score(message: str, last_bot_response: str) -> float:
     return len(msg_words & bot_words) / len(bot_words)
 
 # ▶ Gemini API 요청 함수 (응답 JSON 형식 유지)
-
 def gemini_response_filter(final_messages: List[str]) -> dict:
     """
     Gemini API에 사용자 질문 리스트를 보내서 JSON 형식 응답을 받는 함수.
     """
 
     # 1) 질문들을 문자열로 연결 (API 프롬프트용)
-    prompt = "다음은 사용자들의 질문 리스트야. 대표적인 1개의 질문을 뽑아줘:\n"
+    prompt = "다음은 사용자들의 질문 리스트야. 대표적인 1개의 질문을 뽑아줘(반드시 한국어로 대답할 것):\n"
     for i, msg in enumerate(final_messages):
         prompt += f"{i+1}. {msg}\n"
 
@@ -127,15 +140,6 @@ Output:
 "How does the YouTube algorithm work?"
 
 [Example 4]
-Enter:
-- Why is Lee Jae-myung being criticized so much?
-- What should I do today?
-- I don't want to talk about politics
-
-Output:
-"What should I do today?"
-
-[Example 5]
 Enter:
 - Can I have a cat?
 - What should I eat for lunch today?
@@ -209,14 +213,3 @@ When the list of questions comes in, please refer to the above criteria and exam
         }
 
 
-def select_final_messages(messages: List[str], last_bot_response: str, top_k: int = 3, threshold: float = 0.4) -> List[str]:
-    """
-    유사도 없이 단순히 유효한 메시지 중 상위 top_k개 선택
-    """
-    filtered = [msg for msg in messages if is_valid_message(msg)]
-
-    print("🟢 선택된 질문들:")
-    for msg in filtered[:top_k]:
-        print(f" - 질문: {msg}")
-
-    return filtered[:top_k]
