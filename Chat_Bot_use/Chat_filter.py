@@ -5,7 +5,11 @@ import re
 import requests
 import json
 from typing import List
+from dotenv import load_dotenv
+import os
 
+# .env 파일의 내용을 환경 변수로 불러옴
+load_dotenv()
 
 
 def collect_recent_messages(chat_stream: Queue, duration: int = 10) -> List[tuple]:
@@ -81,7 +85,7 @@ def gemini_response_filter(final_messages: List[str]) -> dict:
         prompt += f"{i+1}. {msg}\n"
 
     # 2) Gemini API endpoint와 API 키 (본인 API 키로 교체)
-    api_key = "AIzaSyC_DNkOPFwYAeyDZOpzWla1qOPZOlBYsMc"
+    api_key = os.getenv("API_KEY")
     api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
 
     # 3) 요청 페이로드 구성 (system prompt + user message)

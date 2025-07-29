@@ -3,6 +3,10 @@ import logging
 import uuid
 import json
 import requests 
+from dotenv import load_dotenv
+
+# .env 파일의 내용을 환경 변수로 불러옴
+load_dotenv()
 
 # 로그 설정
 logging.basicConfig(
@@ -15,7 +19,7 @@ logging.basicConfig(
 # Gemini 응답 생성 함수 (LLM_Prompt)
 def get_gemini_response(user_message):
     # https://aistudio.google.com/ 에서 API 받아오기
-    api_key = ""
+    api_key = os.getenv("API_KEY")
     api_url = ""
 
     chat_history = []
