@@ -15,10 +15,20 @@ from Chat_filter import (
 import queue
 import threading
 import random
+import pytchat
 from dotenv import load_dotenv
 
 # .env 파일의 내용을 환경 변수로 불러옴
 load_dotenv()
+
+# YouTube 라이브 채팅 비디오 ID 설정
+## 유튜브 스트리밍 방송을 키고 해당 url의 ID 참고
+## 예시. url = https://studio.youtube.com/video/examplevidoeid/livestreaming? = asdqwezxc 일 경우 VIDED_ID = examplevidoeid
+
+YOUTUBE_VIDEO_ID = os.getenv("YOUTUBE_VIDEO_ID")
+
+# 응답을 저장할 파일
+TEXT_FILE = "gpt_response.txt"
 
 dummy_messages = [
     "헐 ㅋㅋ 와 오 시발 이재명이 누구야",
@@ -138,7 +148,7 @@ Required keys (in this exact order):
 User: 강원대학교 총장님은 누구인가요?
 
 {
-  "reason": "The user asked about the university president. I provided the correct name from the provided information, maintaining a friendly tone and a joyful expression.",
+  "reason": "사용자가 강원대학교 총장에 대해 물어보았기 때문에, 제공된 정보를 바탕으로 정확한 이름을 전달하고, 친근한 말투와 즐거운 표정을 유지했어요.",
   "content": "강원대학교 총장님은 정재연 총장님이세요! 자랑스러운 우리 학교의 수장님이시죠!",
   "expression": "Joy",
   "gesture": "Nod Twice"
@@ -147,7 +157,7 @@ User: 강원대학교 총장님은 누구인가요?
 User: 성호광장은 어디에 있나요?
 
 {
-  "reason": "The user asked about a non-existent place. I stated its non-existence and suggested an alternative, keeping a helpful and slightly confused expression.",
+  "reason": "사용자가 존재하지 않는 장소를 질문했기 때문에, 해당 장소가 없음을 알려주고 대체 장소를 제안하며 약간 혼란스러운 표정을 사용했어요.",
   "content": "성호광장이라는 곳은 강원대학교에 따로 없어요! 혹시 백령아트센터나 연적지를 찾으시는 걸까요?",
   "expression": "Confused",
   "gesture": "Think"
@@ -156,7 +166,7 @@ User: 성호광장은 어디에 있나요?
 User: 강가온 너는 몇 살이야?
 
 {
-  "reason": "The user asked about my age. I used the predefined response for age questions, expressing a cheerful and 'kirakira' personality.",
+  "reason": "사용자가 나이에 대해 물어보았기 때문에, 미리 정의된 답변을 사용하며 명랑하고 반짝이는 분위기를 표현했어요.",
   "content": "저는 강원대학교의 역사와 함께 시작했어요! 🌲 여러분과 함께 성장하는 중이랍니다!",
   "expression": "Kirakira",
   "gesture": "Cute"
@@ -165,10 +175,18 @@ User: 강가온 너는 몇 살이야?
 User: 강원대학교 축제는 뭐가 있어요?
 
 {
-  "reason": "The user asked about university festivals. I listed the known festivals from the provided information, using a joyful and informative tone.",
+  "reason": "사용자가 강원대학교의 축제에 대해 물어보았기 때문에, 제공된 축제 정보를 바탕으로 신나고 정보 전달에 적합한 말투와 활기찬 표현을 사용했어요.",
   "content": "우리 강원대학교에는 봄봄축제, 백령대동제, 향연 같은 신나는 축제들이 있어요! 함께 즐겨요!",
   "expression": "Joy 2",
   "gesture": "Energetic"
+}
+
+User: asdlke
+{
+  "reason": "사용자가 의미없는 입력을 했기 때문에, 강가온의 친근한 말투로 유머러스하게 반응하며, 약간 당황한 표정을 사용했어요",
+  "content": "죄송해요, 무슨 말씀인지 잘 모르겠어요! 다시 한 번 말씀해 주실래요?",
+  "expression": "Confused",
+  "gesture": "Look Away"
 }
 """
 
@@ -316,28 +334,42 @@ def strip_code_block(text):
 
 chat_stream = queue.Queue()
 
+# 🔁 채팅 수집 스레드 함수
+def chat_collector(chat):
+    while chat.is_alive():
+        messages = chat.get().sync_items()
+        if messages:
+            for message in messages:
+                chat_stream.put((message.author.name, message.message))
+        time.sleep(0.1) 
+
 def main():
     print("강가온 챗봇 시작! '종료' 입력 시 종료\n")
 
+    chat = pytchat.create(video_id=YOUTUBE_VIDEO_ID)
+
     json_log_path = "chat_log.json"
-    try:
+
+    # Start with an empty list if the JSON log file doesn't exist
+    if os.path.exists(json_log_path):
         with open(json_log_path, "r", encoding="utf-8") as f:
-            json_chat_log = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
+            try:
+                json_chat_log = json.load(f)
+            except json.JSONDecodeError:
+                json_chat_log = []
+    else:
         json_chat_log = []
 
     # 1) 시뮬레이션용 메시지 입력 스레드 시작
-    threading.Thread(target=simulate_chat_input, daemon=True).start()
+    #threading.Thread(target=simulate_chat_input, daemon=True).start()
 
-    while True:
+    # 2) 방송용 메시지 입력 스레드 시작
+    threading.Thread(target=chat_collector, args=(chat,), daemon=True).start()
+
+    while chat.is_alive():
         print("📥 10초 동안 사용자 메시지 수집 중...")
-        collected = collect_recent_messages(chat_stream, duration=10)  # 10초간 큐에서 모음
 
-        # 2) 사용자 입력 받기
-        # user_input = input("질문자: ")
-        
-        # 🔁 user_input을 수동으로 collected에 추가
-        # collected.append(("질문자", user_input))  # 튜플 형식: (사용자명, 메시지)
+        collected = collect_recent_messages(chat_stream, duration=10)  # 10초간 큐에서 모음
 
         if not collected:
             print("⏳ 메시지가 없습니다. 다시 수집합니다.\n")
@@ -363,7 +395,6 @@ def main():
         gemini_response_filter_var = gemini_response_filter(cleaned_messages)
 
         # 응답 출력
-        print("\n🧠 Gemini 필터링 응답 ↓↓↓")
         print(f"📡 Gemini API 원본 응답: {gemini_response_filter_var}")
 
         if not gemini_response_filter_var:
@@ -403,18 +434,26 @@ def main():
                 continue
 
             print(f"🤖 강가온: {content}\n")
+
+            with open(TEXT_FILE, "w", encoding="utf-8") as f:
+                f.write(content)
+
             audio_data = text_to_speech(content)
             save_and_play_audio(audio_data)
 
+            # 여기서 예를 들어 첫 번째 메시지로 로그 문자열 만들기
+            first_user, first_msg = collected[0]
+            log_message = f"{first_user}: {first_msg}"  # log_message를 만듦
+
             with open("chat_log.txt", "a", encoding="utf-8") as log_file:
-                log_file.write(f"질문자: {gemini_response_filter_var}\n")
+                log_file.write(f"질문자: {log_message}\n")
                 log_file.write(f"강가온 (이유): {reason}\n")
                 log_file.write(f"강가온: {content}\n")
                 log_file.write(f"[표정: {expression}]\n")
                 log_file.write(f"[행동: {gesture}]\n\n")
 
             json_chat_log.append({
-                "user": gemini_response_filter_var,
+                "user": log_message,
                 "reason": reason,
                 "response": content,
                 "expression": expression,
