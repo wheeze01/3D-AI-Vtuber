@@ -1,8 +1,8 @@
 # 3D-AI-Vtuber
 
-25.7.29 update
+✔️ 25.7.29 update
 
-### 구조 변경 체크
+### 구조 변경 
 
 1. 모든 API 코드를 .env로 변경 (형식은 .env example로 올림)
 2. 안쓰는 코드는 Chat_Bot_unsed, 쓰는 코드는 Chat_Bot_use로 변경
@@ -13,3 +13,10 @@
 
 1. 필터링
 2. vt-studio - 유튜브 방송용
+
+✔️ 25.8.04 update
+
+### 추가 내용
+1. Chat_Bot_unsed/Promt_Test(Gemini).py
+- 프롬프트 테스트용 추가
+- 저장 방식 변경 (logs 폴더 추가)
