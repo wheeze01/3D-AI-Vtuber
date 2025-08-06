@@ -27,6 +27,7 @@ time_str = now.strftime("[%Y-%m-%d %H:%M:%S]")  # 예: [2025-08-04 16:35:22]
 # .env 파일의 내용을 환경 변수로 불러옴
 load_dotenv()
 
+'''
 # 로그 설정
 logging.basicConfig(
     filename="chat_log.txt",
@@ -34,6 +35,7 @@ logging.basicConfig(
     format="%(asctime)s - %(message)s",
     encoding="utf-8"
 )
+'''
 
 # Function to generate Gemini response (text)
 def get_gemini_response(user_message):
@@ -353,45 +355,47 @@ def main():
 
     collected = []
     while True:
-        print("📥 10초 동안 사용자 메시지 수집 중...")
+        #print("📥 10초 동안 사용자 메시지 수집 중...")
         
         user_input = input("질문자: ")
-        collected.append(("user", user_input))  # 튜플 구조 맞게
+        #collected.append(("user", user_input))  # 튜플 구조 맞게
 
          # 여기서 추가 수집하고 합치기
-        collected += collect_recent_messages(chat_stream, duration=10)
+        #collected += collect_recent_messages(chat_stream, duration=10)
 
-        if not collected:
-            print("⏳ 메시지가 없습니다. 다시 수집합니다.\n")
-            continue
+        #if not collected:
+        #    print("⏳ 메시지가 없습니다. 다시 수집합니다.\n")
+        #    continue
 
         # 전처리: 유저별 중복 제거, 정제, 유효성 필터링
-        cleaned_messages = []
-        seen_users = set()
-        for user, msg in collected:
-            if user not in seen_users:
-                cleaned = clean_text(msg)
-                if is_valid_message(cleaned):
-                    seen_users.add(user)
-                    cleaned_messages.append(cleaned)
+        #cleaned_messages = []
+        #seen_users = set()
+        #for user, msg in collected:
+        #    if user not in seen_users:
+        #        cleaned = clean_text(msg)
+        #        if is_valid_message(cleaned):
+        #           seen_users.add(user)
+        #            cleaned_messages.append(cleaned)
 
-        print(f"✅ 필터링된 채팅: {len(cleaned_messages)}개")
+        #print(f"✅ 필터링된 채팅: {len(cleaned_messages)}개")
 
 
         # 직전 응답 가져오기 (빈 문자열이면 첫 회차)
         #last_response = json_chat_log[-1]["response"] if json_chat_log else ""
 
         # Gemini 응답 생성
-        gemini_response_filter_var = gemini_response_filter(cleaned_messages)
+        #gemini_response_filter_var = gemini_response_filter(cleaned_messages)
 
         # 응답 출력
         #print(f"📡 Gemini API 원본 응답: {gemini_response_filter_var}")
 
-        if not gemini_response_filter_var:
-            print("✅ 필터링 후 남은 메시지가 없습니다. 다시 수집합니다.\n")
-            continue
+        #if not gemini_response_filter_var:
+        #    print("✅ 필터링 후 남은 메시지가 없습니다. 다시 수집합니다.\n")
+        #    continue
 
+        
 
+        '''
         if isinstance(gemini_response_filter_var, dict):
             response_entry = gemini_response_filter_var.get("response", {})
             if isinstance(response_entry, dict):
@@ -457,6 +461,61 @@ def main():
                     json.dump(json_chat_log, f, ensure_ascii=False, indent=2)
             except Exception as e:
                 print(f"⚠️ JSON 저장 중 오류 발생: {e}")
+            '''
+
+        # GPT 응답 생성 (JSON 형식 문자열)
+        bot_response = get_gemini_response(user_input)
+
+        if "```" in bot_response:
+            clean_response = strip_code_block(bot_response)
+        else:
+            clean_response = bot_response
+
+        try:
+            response_json = json.loads(clean_response)
+            reason = response_json.get("reason", "No reason provided.")
+            content = response_json.get("content", "")
+            expression = response_json.get("expression", "")
+            gesture = response_json.get("gesture", "")
+        except json.JSONDecodeError:
+            print("⚠️ JSON 형식 오류. 모델이 JSON 형식을 따르지 않았을 수 있습니다.")
+            print(f"🤖 강가온 (Raw Response): {bot_response}\n")
+            continue
+
+        print(f"🤖 강가온: {content}\n")
+
+        #with open(TEXT_FILE, "w", encoding="utf-8") as f:
+        #    f.write(content)
+
+        #audio_data = text_to_speech(content)
+        #save_and_play_audio(audio_data)
+
+        # 여기서 예를 들어 첫 번째 메시지로 로그 문자열 만들기
+        #first_user, first_msg = user_input[0]
+        log_message = f"질문자: {user_input}"  # log_message를 만듦
+
+        with open("logs/chat_log_test.txt", "a", encoding="utf-8") as log_file:
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 현재 시간 문자열로
+            log_file.write(f"[{current_time}]\n")  # 시간 로그
+            log_file.write(f"질문자: {log_message}\n")
+            log_file.write(f"강가온 (이유): {reason}\n")
+            log_file.write(f"강가온: {content}\n")
+            log_file.write(f"[표정: {expression}]\n")
+            log_file.write(f"[행동: {gesture}]\n\n")
+
+        json_chat_log.append({
+            "user": log_message,
+            "reason": reason,
+            "response": content,
+            "expression": expression,
+            "gesture": gesture
+        })
+
+        try:
+            with open(json_log_path, "w", encoding="utf-8") as f:
+                json.dump(json_chat_log, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"⚠️ JSON 저장 중 오류 발생: {e}")
 
 if __name__ == "__main__":
     main()
