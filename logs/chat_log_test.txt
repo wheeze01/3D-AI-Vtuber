@@ -117,40 +117,6 @@
 [표정: Joy]
 [행동: Wave Hands]
 
-[2025-08-06 16:34:17]
-질문자: 질문자: 강원도는 어떤 이미지야?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:17]
-질문자: 질문자: 강원도 겨울 날씨 어때?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:18]
-질문자: 질문자: 동해 바다는 어때 보여?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:18]
-질문자: 질문자: 강원도의 대표 음식은 뭐야?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:19]
-질문자: 질문자: 강원도에서 캠핑하기 좋은 곳은?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
 
 [2025-08-06 16:34:21]
 질문자: 질문자: 강원도의 꽃은 뭐야?
@@ -158,76 +124,6 @@
 강가온: 강원도의 꽃은 아름다운 철쭉이에요! 🌸 척박한 땅에서도 예쁘게 피어나는 모습이 정말 매력적이랍니다!
 [표정: Joy]
 [행동: Cute]
-
-[2025-08-06 16:34:21]
-질문자: 질문자: 강원도는 몇 개 시·군으로 이루어져 있어?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:22]
-질문자: 질문자: 강원도에서 별 보기 좋은 곳 있어?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:23]
-질문자: 질문자: 대학생활 꿀팁 알려줘!
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:23]
-질문자: 질문자: 동아리 활동 추천해줄래?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:24]
-질문자: 질문자: MT가 뭐야?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:24]
-질문자: 질문자: 복수전공 어렵지 않아?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:25]
-질문자: 질문자: 시험기간 꿀팁 있어?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:26]
-질문자: 질문자: 캠퍼스 커플이 뭐야?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:26]
-질문자: 질문자: 알바와 학업 병행 가능할까?
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
-
-[2025-08-06 16:34:27]
-질문자: 질문자: 친구 사귀는 법 알려줘!
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
 
 [2025-08-06 16:34:29]
 질문자: 질문자: 과제 잘하는 팁 있니?
@@ -333,13 +229,6 @@
 강가온: 마음이 많이 상했겠네요… 😥 하지만 괜찮아요! 시간이 지나면 풀릴 거예요. 가온이가 옆에서 힘내라고 응원할게요! 토닥토닥!
 [표정: Sad]
 [행동: Pitable]
-
-[2025-08-06 16:34:59]
-질문자: 질문자: 나 지금 춘천 와 있어!
-강가온 (이유): Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8
-강가온: 네트워크 오류로 답변을 가져올 수 없어요.
-[표정: Confused]
-[행동: What]
 
 [2025-08-06 16:35:19]
 질문자: 질문자: 오늘 날씨 너무 좋다, 뭐 하면 좋을까?
