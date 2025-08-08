@@ -118,41 +118,7 @@
     "expression": "Joy",
     "gesture": "Wave Hands"
   },
-  {
-    "user": "질문자: 강원도는 어떤 이미지야?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 강원도 겨울 날씨 어때?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 동해 바다는 어때 보여?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 강원도의 대표 음식은 뭐야?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 강원도에서 캠핑하기 좋은 곳은?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
+  
   {
     "user": "질문자: 강원도의 꽃은 뭐야?",
     "reason": "사용자가 강원도의 꽃에 대해 질문했으므로, 강원도를 대표하는 꽃인 철쭉을 소개하고, 친근하고 호기심을 자극하는 표정을 사용했습니다.",
@@ -160,76 +126,7 @@
     "expression": "Joy",
     "gesture": "Cute"
   },
-  {
-    "user": "질문자: 강원도는 몇 개 시·군으로 이루어져 있어?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 강원도에서 별 보기 좋은 곳 있어?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 대학생활 꿀팁 알려줘!",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 동아리 활동 추천해줄래?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: MT가 뭐야?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 복수전공 어렵지 않아?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 시험기간 꿀팁 있어?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 캠퍼스 커플이 뭐야?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 알바와 학업 병행 가능할까?",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
-  {
-    "user": "질문자: 친구 사귀는 법 알려줘!",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
-  },
+
   {
     "user": "질문자: 과제 잘하는 팁 있니?",
     "reason": "사용자가 과제 잘하는 팁에 대해 질문했기 때문에, 강가온의 친근하고 긍정적인 성격을 반영하여 조언하고, 공감하는 제스처를 사용했습니다.",
@@ -334,13 +231,6 @@
     "response": "마음이 많이 상했겠네요… 😥 하지만 괜찮아요! 시간이 지나면 풀릴 거예요. 가온이가 옆에서 힘내라고 응원할게요! 토닥토닥!",
     "expression": "Sad",
     "gesture": "Pitable"
-  },
-  {
-    "user": "질문자: 나 지금 춘천 와 있어!",
-    "reason": "Network error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5AD8-A8oLFcBKKHNHDYO6jATyotAOxX8",
-    "response": "네트워크 오류로 답변을 가져올 수 없어요.",
-    "expression": "Confused",
-    "gesture": "What"
   },
   {
     "user": "질문자: 오늘 날씨 너무 좋다, 뭐 하면 좋을까?",
