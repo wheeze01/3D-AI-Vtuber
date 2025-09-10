@@ -1,26 +1,3 @@
-# ✔️ 25.7.29 update
-
-### 구조 변경 
-
-1. 모든 API 코드를 .env로 변경 (형식은 .env example로 올림)
-2. 안쓰는 코드는 Chat_Bot_unsed, 쓰는 코드는 Chat_Bot_use로 변경
-3. 메인 코드였던 "demo_ver"를 "Chat_bot_main.py"로 이름 변경
-4. 방송용 코드는 3D-AI-Vtuber/tree/New/Chat_Bot_unused/프로토타입(유튜브 댓글 읽기).py 에 있으며, 아직 필터링으로 바꾸진 않음 (현제 테스트 중)
-
-### 추가 내용
-
-1. 필터링
-2. vt-studio - 유튜브 방송용
-<br><br>
-# ✔️ 25.8.04 update
-
-### 추가 내용
-1. Chat_Bot_unsed/Promt_Test(Gemini).py
-- 프롬프트 테스트용 추가
-- 저장 방식 변경 (logs 폴더 추가)
-<br><br>
-
-# ✔️ 25.09.09 update: 이규원 - 인수인계 사항 
 # AI-vtuber 유튜브 방송 채팅 크롤링 시스템 🎥🤖
 
 이 프로젝트는 **AI 기반 버튜버(가상 유튜버) 방송 시스템**에 대한 설명입니다.  
