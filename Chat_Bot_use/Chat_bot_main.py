@@ -220,8 +220,10 @@ User: asdlke
             logging.error(f"Unexpected API response structure: {result}")
             return json.dumps({"reason": "API response was malformed.", "content": "죄송해요, 답변을 생성하는 데 문제가 발생했어요.", "expression": "Sad", "gesture": "cry"})
     except requests.exceptions.RequestException as e:
-        logging.error(f"API request failed: {e}")
-        return json.dumps({"reason": f"Network error: {e}", "content": "네트워크 오류로 답변을 가져올 수 없어요.", "expression": "Confused", "gesture": "What"})
+        #logging.error(f"API request failed: {e}") # API 노출 위험
+        logging.error(f"API request failed")
+        #return json.dumps({"reason": f"Network error: {e}", "content": "네트워크 오류로 답변을 가져올 수 없어요.", "expression": "Confused", "gesture": "What"})
+        return json.dumps({"reason": f"Network error: ", "content": "네트워크 오류로 답변을 가져올 수 없어요.", "expression": "Confused", "gesture": "What"})
     except json.JSONDecodeError as e:
         logging.error(f"Failed to decode JSON response: {e}, Response content: {response.text}")
         return json.dumps({"reason": f"JSON decode error: {e}", "content": "서버 응답을 처리하는 데 문제가 발생했어요.", "expression": "Confused", "gesture": "What"})
@@ -268,8 +270,9 @@ def text_to_speech(text):
             print("⚠️ 음성 데이터를 가져오는 데 실패했습니다: 응답 구조 오류.")
             return b''
     except requests.exceptions.RequestException as e:
-        logging.error(f"TTS API request failed: {e}")
-        print(f"⚠️ 음성 데이터를 가져오는 데 실패했습니다: 네트워크 오류 - {e}")
+        #logging.error(f"TTS API request failed: {e}")
+        #print(f"⚠️ 음성 데이터를 가져오는 데 실패했습니다: 네트워크 오류 - {e}") # API 노출 위험
+        print(f"⚠️ 음성 데이터를 가져오는 데 실패했습니다: 네트워크 오류")
         return b''
     except json.JSONDecodeError as e:
         logging.error(f"Failed to decode TTS JSON response: {e}, Response content: {response.text}")
